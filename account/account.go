@@ -53,39 +53,40 @@ func NewHDAccountWithDerivationPath(mnemonic, path string) (*Account, error) {
 }
 
 func newHDAccount(mnemonic string, path DerivationPath) (*Account, error) {
-	seed := bip39.NewSeed(mnemonic, "")
-	// Generate a new master node using the seed.
-	masterKey, err := hdkeychain.NewMaster(seed, &chaincfg.MainNetParams)
-	if err != nil {
-		return nil, err
-	}
-	acc44H, err := masterKey.Child(hdkeychain.HardenedKeyStart + canonical(path[0]))
-	if err != nil {
-		return nil, err
-	}
-	acc44H313H, err := acc44H.Child(hdkeychain.HardenedKeyStart + canonical(path[1]))
-	if err != nil {
-		return nil, err
-	}
-	acc44H313H0H, err := acc44H313H.Child(hdkeychain.HardenedKeyStart + canonical(path[2]))
-	if err != nil {
-		return nil, err
-	}
-	acc44H313H0H0, err := acc44H313H0H.Child(canonical(path[3]))
-	if err != nil {
-		return nil, err
-	}
-	acc44H60H0H00, err := acc44H313H0H0.Child(canonical(path[4]))
-	if err != nil {
-		return nil, err
-	}
-	btcecPrivKey, err := acc44H60H0H00.ECPrivKey()
-	if err != nil {
-		return nil, err
-	}
-	privateKey := btcecPrivKey.ToECDSA()
-	account := NewAccount(privateKey.D.Bytes())
-	return account, nil
+	// seed := bip39.NewSeed(mnemonic, "")
+	// // Generate a new master node using the seed.
+	// masterKey, err := hdkeychain.NewMaster(seed, &chaincfg.MainNetParams)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// acc44H, err := masterKey.Child(hdkeychain.HardenedKeyStart + canonical(path[0]))
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// acc44H313H, err := acc44H.Child(hdkeychain.HardenedKeyStart + canonical(path[1]))
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// acc44H313H0H, err := acc44H313H.Child(hdkeychain.HardenedKeyStart + canonical(path[2]))
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// acc44H313H0H0, err := acc44H313H0H.Child(canonical(path[3]))
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// acc44H60H0H00, err := acc44H313H0H0.Child(canonical(path[4]))
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// btcecPrivKey, err := acc44H60H0H00.ECPrivKey()
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// privateKey := btcecPrivKey.ToECDSA()
+	// account := NewAccount(privateKey.D.Bytes())
+	// return account, nil
+	return nil, nil
 }
 
 func NewDefaultHDAccount(mnemonic string, index uint32) (*Account, error) {
