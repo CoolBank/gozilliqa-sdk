@@ -23,9 +23,6 @@ import (
 	"github.com/Zilliqa/gozilliqa-sdk/crypto"
 	"github.com/Zilliqa/gozilliqa-sdk/keytools"
 	"github.com/Zilliqa/gozilliqa-sdk/util"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcutil/hdkeychain"
-	"github.com/tyler-smith/go-bip39"
 )
 
 type Account struct {
