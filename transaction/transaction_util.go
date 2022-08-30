@@ -18,76 +18,82 @@ package transaction
 
 import (
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"math/big"
+	"strconv"
+
+	"github.com/Zilliqa/gozilliqa-sdk/protobuf"
+	"github.com/Zilliqa/gozilliqa-sdk/util"
+	"google.golang.org/protobuf/proto"
 )
 
 func EncodeTransactionProto(txParams TxParams) ([]byte, error) {
-	// amount, ok := new(big.Int).SetString(txParams.Amount, 10)
-	// if !ok {
-	// 	return nil, errors.New("amount error")
-	// }
+	amount, ok := new(big.Int).SetString(txParams.Amount, 10)
+	if !ok {
+		return nil, errors.New("amount error")
+	}
 
-	// gasPrice, ok2 := new(big.Int).SetString(txParams.GasPrice, 10)
-	// if !ok2 {
-	// 	return nil, errors.New("gas price error")
-	// }
+	gasPrice, ok2 := new(big.Int).SetString(txParams.GasPrice, 10)
+	if !ok2 {
+		return nil, errors.New("gas price error")
+	}
 
-	// v, err := strconv.ParseUint(txParams.Version, 10, 32)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// version := uint32(v)
+	v, err := strconv.ParseUint(txParams.Version, 10, 32)
+	if err != nil {
+		return nil, err
+	}
+	version := uint32(v)
 
-	// nonce, err2 := strconv.ParseUint(txParams.Nonce, 10, 64)
-	// if err2 != nil {
-	// 	return nil, err2
-	// }
+	nonce, err2 := strconv.ParseUint(txParams.Nonce, 10, 64)
+	if err2 != nil {
+		return nil, err2
+	}
 
-	// senderpubkey := protobuf.ByteArray{
-	// 	Data: util.DecodeHex(txParams.SenderPubKey),
-	// }
+	senderpubkey := protobuf.ByteArray{
+		Data: util.DecodeHex(txParams.SenderPubKey),
+	}
 
-	// amountArray := protobuf.ByteArray{
-	// 	Data: bigIntToPaddedBytes(amount, 32),
-	// }
+	amountArray := protobuf.ByteArray{
+		Data: bigIntToPaddedBytes(amount, 32),
+	}
 
-	// gasPriceArray := protobuf.ByteArray{
-	// 	Data: bigIntToPaddedBytes(gasPrice, 32),
-	// }
+	gasPriceArray := protobuf.ByteArray{
+		Data: bigIntToPaddedBytes(gasPrice, 32),
+	}
 
-	// gasLimit, err3 := strconv.ParseUint(txParams.GasLimit, 10, 64)
-	// if err3 != nil {
-	// 	return nil, err3
-	// }
+	gasLimit, err3 := strconv.ParseUint(txParams.GasLimit, 10, 64)
+	if err3 != nil {
+		return nil, err3
+	}
 
-	// protoTransactionCoreInfo := protobuf.ProtoTransactionCoreInfo{
-	// 	Version:      &version,
-	// 	Nonce:        &nonce,
-	// 	Toaddr:       util.DecodeHex(txParams.ToAddr),
-	// 	Senderpubkey: &senderpubkey,
-	// 	Amount:       &amountArray,
-	// 	Gasprice:     &gasPriceArray,
-	// 	Gaslimit:     &gasLimit,
-	// }
+	protoTransactionCoreInfo := protobuf.ProtoTransactionCoreInfo{
+		Version:      &version,
+		Nonce:        &nonce,
+		Toaddr:       util.DecodeHex(txParams.ToAddr),
+		Senderpubkey: &senderpubkey,
+		Amount:       &amountArray,
+		Gasprice:     &gasPriceArray,
+		Gaslimit:     &gasLimit,
+	}
 
-	// if txParams.Data == "\"\"" {
-	// 	txParams.Data = ""
-	// }
+	if txParams.Data == "\"\"" {
+		txParams.Data = ""
+	}
 
-	// if txParams.Data != "" {
-	// 	protoTransactionCoreInfo.Data = []byte(txParams.Data)
-	// }
+	if txParams.Data != "" {
+		protoTransactionCoreInfo.Data = []byte(txParams.Data)
+	}
 
-	// if txParams.Code != "" {
-	// 	protoTransactionCoreInfo.Code = []byte(txParams.Code)
-	// }
+	if txParams.Code != "" {
+		protoTransactionCoreInfo.Code = []byte(txParams.Code)
+	}
 
-	// bytes, err4 := proto.Marshal(&protoTransactionCoreInfo)
-	// if err4 != nil {
-	// 	return nil, err4
-	// }
-	return nil, nil
+	bytes, err4 := proto.Marshal(&protoTransactionCoreInfo)
+	if err4 != nil {
+		return nil, err4
+	}
+	return bytes, nil
 
 }
 
